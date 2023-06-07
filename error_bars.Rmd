@@ -48,6 +48,8 @@ Boyce et al. (2020) investigated how well the Maze task captures incremental syn
 
 <center> ![The Maze task](images/maze-demo.png){#id .class width=50% height=50%} </center>
 
+Getting a word wrong ends the trial. The reaction time (RT) in choosing the critical word in the sentence is the dependent measure.
+
 ## Example sentence contrast {.build}
 
 * The uncle of the waitress who hurt **herself** was shocked by the accident.
@@ -168,7 +170,8 @@ oneitem_means <- dat_oneitem %>%
 ```{r}
 ggplot(oneitem_means,aes(x=Type,y=RT)) +
   geom_bar(stat="identity",position=my_dodge) +
-    ylim(c(0,1800))
+    ylim(c(0,1800)) +
+    ylab("Mean RT")
 ```
 
 
@@ -211,7 +214,7 @@ ggplot(dat_to_plot,aes(x=Type,y=RT)) +
   ggtitle("Standard error")
 ```
 
-In this example, N is `r nrow(filter(dat_oneitem,Type=="High attachment"))` for high attachment sentences and `r nrow(filter(dat_oneitem,Type=="Low attachment"))` for low attachment sentences
+In this example, N is `r nrow(filter(dat_oneitem,Type=="High attachment"))` for high attachment sentences and `r nrow(filter(dat_oneitem,Type=="Low attachment"))` for low attachment sentences. Collecting more data would *shrink* the standard error.
 
 
 
@@ -332,7 +335,7 @@ ggplot(X1,aes(x=x,y=Y,color=replicate)) +
   - attach those confidence intervals to the original condition means
 * Result:
   
-```{r out.height="50%", out.width="50%"}
+```{r fig.height=3.5,out.height="50%", out.width="50%", warning=F}
 replicate_means <- with(X,tapply(Y,replicate,mean))
 X$Y_adjusted <- X$Y - replicate_means[X$replicate]
 X_summary_stats <- X %>%
@@ -341,16 +344,16 @@ X_summary_stats <- X %>%
 ggplot(X_summary_stats,aes(x=Condition,y=Mean)) +
   geom_bar(stat="identity",position=my_dodge) +
   geom_errorbar(ymin=X_summary_stats$Mean-1.96*X_summary_stats$SE,ymax=X_summary_stats$Mean+1.96*X_summary_stats$SE,width=0.2,position=my_dodge) +
-  ylim(c(0,1.5)) +
+  ylim(c(-1,1.5)) +
   ggtitle("Standard 95% CIs")
 ggplot(X_summary_stats,aes(x=Condition,y=Mean)) +
   geom_bar(stat="identity",position=my_dodge) +
   geom_errorbar(ymin=X_summary_stats$Mean-1.96*X_summary_stats$SE_loftus_masson,ymax=X_summary_stats$Mean+1.96*X_summary_stats$SE_loftus_masson,width=0.2,position=my_dodge) +
-  ylim(c(0,1.5)) +
+  ylim(c(-1,1.5)) +
   ggtitle("Loftus & Masson 95% CIs")
 ```
 
-
+* Bonus result: the confidence interval on the difference between sample means is `sqrt(2)` times the size of this Loftus & Masson confidence interval
 
 ## More issues with repeated measures {.smaller}
 
@@ -359,8 +362,14 @@ Back to Boyce et al (2020): actually there were 24 items (sentence pairs), each 
 ```{r }
 dat_subset <- filter(dat,Subject %in% c(2,4,14),Item %in% c(1,4,24)) %>%
   select(Subject,Item,Type,word,rt)
-print(dat_subset)
+print(as.data.frame(dat_subset))
 ```
+
+A couple more example items -- notice the potential for item effects:
+
+* The sister of the salesman who made a fool of herself/himself at work was very angry.
+* The nephew of the queen who praised himself/herself all the time was very rude.
+
 
 This means that our observations are **not** iid and therefore naive standard errors and confidence intervals would be **invalid**!
 
@@ -475,7 +484,7 @@ summary(m)
 * However, there are many ways to use them.
   - Think carefully about **what you want them to convey**; and
   - **Be clear about how you are using them.**
-* For even the simplest data, your choices about error bars usually imply an implicit assumed generative model.
+* For even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model
 * Sometimes, fitting a model is the best way to accurately quantify the uncertainty you want to convey.
 
 ## Thanks!!!

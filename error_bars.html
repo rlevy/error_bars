@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error bars</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+  <meta name="date" content="2023-06-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Error bars',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Roger Levy' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <script src="error_bars_files/header-attrs-2.22/header-attrs.js"></script>
+  <link href="error_bars_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="error_bars_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="error_bars_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="error_bars_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="error_bars_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    details > summary > p:only-child {
+      display: inline;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+            pre > code.sourceCode { white-space: pre; position: relative; }
+            pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+            pre > code.sourceCode > span:empty { height: 1.2em; }
+            .sourceCode { overflow: visible; }
+            code.sourceCode > span { color: inherit; text-decoration: inherit; }
+            div.sourceCode { margin: 1em 0; }
+            pre.sourceCode { margin: 0; }
+            @media screen {
+            div.sourceCode { overflow: auto; }
+            }
+            @media print {
+            pre > code.sourceCode { white-space: pre-wrap; }
+            pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+            }
+            pre.numberSource code
+              { counter-reset: source-line 0; }
+            pre.numberSource code > span
+              { position: relative; left: -4em; counter-increment: source-line; }
+            pre.numberSource code > span > a:first-child::before
+              { content: counter(source-line);
+                position: relative; left: -1em; text-align: right; vertical-align: baseline;
+                border: none; display: inline-block;
+                -webkit-touch-callout: none; -webkit-user-select: none;
+                -khtml-user-select: none; -moz-user-select: none;
+                -ms-user-select: none; user-select: none;
+                padding: 0 4px; width: 4em;
+                color: #aaaaaa;
+              }
+            pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+            div.sourceCode
+              {   }
+            @media screen {
+            pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+            }
+            code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+            code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+            code span.at { color: #7d9029; } /* Attribute */
+            code span.bn { color: #40a070; } /* BaseN */
+            code span.bu { color: #008000; } /* BuiltIn */
+            code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+            code span.ch { color: #4070a0; } /* Char */
+            code span.cn { color: #880000; } /* Constant */
+            code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+            code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+            code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+            code span.dt { color: #902000; } /* DataType */
+            code span.dv { color: #40a070; } /* DecVal */
+            code span.er { color: #ff0000; font-weight: bold; } /* Error */
+            code span.ex { } /* Extension */
+            code span.fl { color: #40a070; } /* Float */
+            code span.fu { color: #06287e; } /* Function */
+            code span.im { color: #008000; font-weight: bold; } /* Import */
+            code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+            code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+            code span.op { color: #666666; } /* Operator */
+            code span.ot { color: #007020; } /* Other */
+            code span.pp { color: #bc7a00; } /* Preprocessor */
+            code span.sc { color: #4070a0; } /* SpecialChar */
+            code span.ss { color: #bb6688; } /* SpecialString */
+            code span.st { color: #4070a0; } /* String */
+            code span.va { color: #19177c; } /* Variable */
+            code span.vs { color: #4070a0; } /* VerbatimString */
+            code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        
+  </style>
+
+  <link rel="stylesheet" href="my_style.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides>
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2023-06-07</p>
+          </hgroup>
+  </slide>
+
+<slide class=""><hgroup><h2>Motivation and goal of today’s meeting</h2></hgroup><article  id="motivation-and-goal-of-todays-meeting">
+
+<ul>
+<li>Error bars (and the like) are key parts of scientific visualization</li>
+<li>They are used to convey variability or uncertainty in data or models</li>
+<li>You should use them whenever there is visual room for them</li>
+<li>However, there is no unique &ldquo;right&rdquo; way to construct error bars</li>
+<li>We will discuss good scientific practice in align your choices about error bars with audience expectations and understanding</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>A simple example</h2></hgroup><article  id="a-simple-example">
+
+<p>Boyce et al. (2020) investigated how well the Maze task captures incremental syntactic disambiguation effects in comprehension.</p>
+
+<center>
+
+<img id="id" class="class" width="50%" height="50%" src='images/maze-demo.png' title='fig:'/><p class='caption'>The Maze task</p>
+
+</center>
+
+<p>Getting a word wrong ends the trial. The reaction time (RT) in choosing the critical word in the sentence is the dependent measure.</p>
+
+</article></slide><slide class=""><hgroup><h2>Example sentence contrast</h2></hgroup><article  id="example-sentence-contrast" class="build">
+
+<ul>
+<li>The uncle of the waitress who hurt <strong>herself</strong> was shocked by the accident.</li>
+</ul>
+
+<p>vs</p>
+
+<ul>
+<li>The uncle of the waitress who hurt <strong>himself</strong> was shocked by the accident.</li>
+</ul>
+
+<p>Previous work has shown a <strong>low attachment</strong> preference (i.e., the relative clause <em>who…</em> modifying the more recent noun) in English.</p>
+
+<p>Following Witzel et al. (2012), Boyce et al. had 46 participants (after exclusions) each read one or the other versions of this sentence in the Maze task – not all participants made it through to the critical word without making a mistake, so there are 25 measurements remaining in the dataset.</p>
+
+</article></slide><slide class=""><hgroup><h2>Results</h2></hgroup><article  id="results" class="build">
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-4-1.png" width="720" /></p>
+
+<p>Before I go on: <em>what do you expect error bars to convey?</em></p>
+
+</article></slide><slide class=""><hgroup><h2>Results (with error bars)</h2></hgroup><article  id="results-with-error-bars" class="build smaller">
+
+<p><img src="error_bars_files/figure-html/sd-1.png" width="80%" height="80%" /></p>
+
+<ul>
+<li>These error bars happen to depict the <strong>standard deviation of the sample</strong></li>
+<li>If you collected twice as much data, the standard deviation of the resulting sample would <strong>probably be about the same</strong></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Standard deviation vs standard error</h2></hgroup><article  id="standard-deviation-vs-standard-error" class="build smaller">
+
+<p>Unbiased estimate of population standard deviation: \[s=\left[\frac{1}{N-1} \sum_{i=1}^N (x_i - \bar{x})^2\right]^{\frac{1}{2}}\]</p>
+
+<p>Standard error of the mean: \[s/\sqrt{N}\]</p>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-5-1.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-5-2.png" width="50%" height="50%" /></p>
+
+<p>In this example, N is 14 for high attachment sentences and 11 for low attachment sentences. Collecting more data would <em>shrink</em> the standard error.</p>
+
+</article></slide><slide class=""><hgroup><h2>Conveying uncertainty about the population mean</h2></hgroup><article  id="conveying-uncertainty-about-the-population-mean">
+
+<ul>
+<li>Standard error of the mean = <strong>standard deviation of the estimate of the population mean</strong></li>
+<li>That is: if you repeatedly collected a size-N sample from a normally distributed, it’s the standard deviation of the resulting distribution of sample means</li>
+<li>So the standard error of the mean quantifies <strong>uncertainty in the population mean given the data at hand</strong></li>
+<li>That is <strong>one thing</strong> audiences expect of confidence intervals, and one thing you can thus use them to convey.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>A bit more: 95% confidence intervals</h2></hgroup><article  id="a-bit-more-95-confidence-intervals" class="build smaller">
+
+<ul>
+<li>Central Limit Theorem: the mean of <strong>independent, identically distributed</strong> (iid) random variables tends toward a normal distribution with std deviation equal to the standard error</li>
+<li>Mean ± 1.96 times standard error bounds a symmetric 95% (frequentist) confidence interval on the normal distribution</li>
+<li>With uniform priors, Bayesian confidence intervals (aka <strong>credible intervals</strong>) on the population mean would look generally the same (not shown)</li>
+</ul>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-6-1.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-6-2.png" width="50%" height="50%" /></p>
+
+<p>(Note that ±1.96 times isn’t exact due to finite sample size, but it’s reasonably close except when there are very fe observations)</p>
+
+</article></slide><slide class=""><hgroup><h2>Strength of evidence for differences in condition means?</h2></hgroup><article  id="strength-of-evidence-for-differences-in-condition-means" class="build smaller">
+
+<ul>
+<li>Common faulty inference: using error bar overlap to assess evidence for difference in condition means</li>
+<li>If (1-α)% confidence intervals do <strong>not</strong> overlap for two conditions, it is a <strong>sufficient</strong> condition to conclude with (1-α)% confidence that the underlying means <strong>are different</strong>
+
+<ul>
+<li>This is most easily seen for Bayesian confidence intervals</li>
+</ul></li>
+<li>But it is <strong>not</strong> a <strong>necessary</strong> condition!</li>
+<li>Example: paired samples drawn from</li>
+</ul>
+
+<p>\[\text{Normal}\left(\mu=\langle 0.5,0\rangle,\Sigma=\left[\begin{matrix} 1 &amp; 0.5 \\ 0.5 &amp; 1\end{matrix}\right]\right)\]</p>
+
+<ul>
+<li>Think of each 2D sample as a different subject’s response measure in two different experimental conditions</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Overlapping CIs != strength of evidence for differing means</h2></hgroup><article  id="overlapping-cis-strength-of-evidence-for-differing-means" class="build">
+
+<p>In the below, boxes indicate condition means &amp; 95% CIs:</p>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-8-1.png" width="70%" height="70%" /></p>
+
+<ul>
+<li>Boxes overlap, but a paired t-test shows p=0.003! How???</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Visualizing</h2></hgroup><article  id="visualizing">
+
+<p>A &ldquo;spaghetti plot&rdquo; is revealing: the direction of the A/B contrast is highly consistent within replicate!</p>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-9-1.png" width="70%" height="70%" /></p>
+
+<p>These within-replicate relationships are taken into account by the paired t-test <strong>but not the error bars as I chose to draw them</strong></p>
+
+</article></slide><slide class=""><hgroup><h2>If the data were not paired…</h2></hgroup><article  id="if-the-data-were-not-paired">
+
+<p>Here are the exact same data with the pairings scrambled:</p>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-10-1.png" width="70%" height="70%" /></p>
+
+<ul>
+<li>A paired t-test on these data shows p=0.09</li>
+<li>The error bars I drew convey uncertainty in the condition means <strong>but not the coupling of that uncertainty across conditions</strong></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>&ldquo;Within-group&rdquo; confidence intervals</h2></hgroup><article  id="within-group-confidence-intervals" class="smaller">
+
+<ul>
+<li>Loftus &amp; Masson (1994) argued that &ldquo;because between-subject variance typically plays no role in statistical analyses of within-subject designs, it can legitimately be ignored&rdquo; in constructing confidence intervals</li>
+<li>Their suggested confidence interval is equivalent to the following procedure:
+
+<ul>
+<li>subtract out each subject’s mean from that subject’s data in all conditions</li>
+<li>compute confidence interval widths for each condition</li>
+<li>attach those confidence intervals to the original condition means</li>
+</ul></li>
+<li>Result:</li>
+</ul>
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-11-1.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-11-2.png" width="50%" height="50%" /></p>
+
+<ul>
+<li>Bonus result: the confidence interval on the difference between sample means is <code>sqrt(2)</code> times the size of this Loftus &amp; Masson confidence interval</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>More issues with repeated measures</h2></hgroup><article  id="more-issues-with-repeated-measures" class="smaller">
+
+<p>Back to Boyce et al (2020): actually there were 24 items (sentence pairs), each read in one of the two conditions by each of the 46 participants, so our observations have <strong>repeated measures</strong> within both subjects and items - a sample of the dataset:</p>
+
+<pre >##   Subject Item            Type    word   rt
+## 1       2    1  Low attachment herself  955
+## 2       2   24 High attachment herself  652
+## 3       2    4 High attachment himself  633
+## 4       4    4  Low attachment herself  610
+## 5       4   24  Low attachment himself 1077
+## 6       4    1 High attachment himself  716
+## 7      14    1 High attachment himself  736
+## 8      14    4  Low attachment herself  687
+## 9      14   24  Low attachment himself  704</pre>
+
+<p>A couple more example items – notice the potential for item effects:</p>
+
+<ul>
+<li>The sister of the salesman who made a fool of herself/himself at work was very angry.</li>
+<li>The nephew of the queen who praised himself/herself all the time was very rude.</li>
+</ul>
+
+<p>This means that our observations are <strong>not</strong> iid and therefore naive standard errors and confidence intervals would be <strong>invalid</strong>!</p>
+
+</article></slide><slide class=""><hgroup><h2>By-group data aggregation</h2></hgroup><article  id="by-group-data-aggregation" class="smaller">
+
+<pre class = 'prettyprint lang-r'>dat_by_subject &lt;- dat_subset %&gt;% 
+  group_by(Subject,Type) %&gt;%
+  summarize(rt=mean(rt))</pre>
+
+<pre >##   Subject            Type    rt
+## 1       2 High attachment 642.5
+## 2       2  Low attachment 955.0
+## 3       4 High attachment 716.0
+## 4       4  Low attachment 843.5
+## 5      14 High attachment 736.0
+## 6      14  Low attachment 695.5</pre>
+
+<pre class = 'prettyprint lang-r'>summary_stats &lt;- dat_by_subject %&gt;%
+  group_by(Type) %&gt;%
+  summarize(RT=mean(rt),SE=se(rt))</pre>
+
+<pre >##              Type       RT       SE
+## 1 High attachment 698.1667 28.42583
+## 2  Low attachment 831.3333 75.15780</pre>
+
+</article></slide><slide class=""><hgroup><h2>By-group data aggregation</h2></hgroup><article  id="by-group-data-aggregation-1" class="smaller">
+
+<p>Raw means &amp; standard errors:</p>
+
+<pre >##              Type       RT       SE
+## 1 High attachment 935.0564 26.68217
+## 2  Low attachment 828.7740 18.47057</pre>
+
+<p>By subjects:</p>
+
+<pre >##              Type       RT       SE
+## 1 High attachment 942.9155 38.48789
+## 2  Low attachment 867.4657 51.43884</pre>
+
+<p>By items:</p>
+
+<pre >##              Type       RT       SE
+## 1 High attachment 931.4581 31.70127
+## 2  Low attachment 832.0440 23.46972</pre>
+
+</article></slide><slide class=""><hgroup><h2>By-group data aggregation</h2></hgroup><article  id="by-group-data-aggregation-2">
+
+<p><img src="error_bars_files/figure-html/unnamed-chunk-21-1.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-21-2.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-21-3.png" width="50%" height="50%" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Mixed-effects models can help!</h2></hgroup><article  id="mixed-effects-models-can-help" class="smaller">
+
+<p>Dummy-coding conditions (two 0/1 vars) gives uncertainty about condition means:</p>
+
+<pre >## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
+## Formula: rt ~ 0 + Type + (0 + Type | subject) + (0 + Type | item.factor)
+##    Data: dat
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   9507.5   9547.7  -4744.8   9489.5      633 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.4601 -0.5370 -0.2124  0.1697  6.2706 
+## 
+## Random effects:
+##  Groups      Name                Variance Std.Dev. Corr
+##  subject     TypeHigh attachment  35496.1 188.40       
+##              TypeLow attachment   20456.4 143.03   0.99
+##  item.factor TypeHigh attachment  12425.3 111.47       
+##              TypeLow attachment     613.2  24.76   1.00
+##  Residual                        137203.5 370.41       
+## Number of obs: 642, groups:  subject, 40; item.factor, 24
+## 
+## Fixed effects:
+##                     Estimate Std. Error t value
+## TypeHigh attachment   942.66      44.34   21.26
+## TypeLow attachment    838.77      31.92   26.28
+## 
+## Correlation of Fixed Effects:
+##             TypHga
+## TypLwattchm 0.609 
+## optimizer (nloptwrap) convergence code: 0 (OK)
+## boundary (singular) fit: see help(&#39;isSingular&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Mixed-effects models can help!</h2></hgroup><article  id="mixed-effects-models-can-help-1" class="smaller">
+
+<p>Sum-coding condition (±1) gives uncertainty about condition differences:</p>
+
+<pre >## Linear mixed model fit by maximum likelihood  [&#39;lmerMod&#39;]
+## Formula: rt ~ TypeSum + (TypeSum | subject) + (TypeSum | item.factor)
+##    Data: dat
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##   9507.5   9547.7  -4744.8   9489.5      633 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.4601 -0.5370 -0.2124  0.1697  6.2706 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev. Corr
+##  subject     (Intercept)  27317.8 165.28       
+##              TypeSum        660.4  25.70   0.89
+##  item.factor (Intercept)   4639.4  68.11       
+##              TypeSum       1879.3  43.35   1.00
+##  Residual                137203.4 370.41       
+## Number of obs: 642, groups:  subject, 40; item.factor, 24
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)   890.72      34.32  25.956
+## TypeSum        51.94      17.75   2.926
+## 
+## Correlation of Fixed Effects:
+##         (Intr)
+## TypeSum 0.389 
+## optimizer (nloptwrap) convergence code: 0 (OK)
+## boundary (singular) fit: see help(&#39;isSingular&#39;)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Takeaways</h2></hgroup><article  id="takeaways">
+
+<ul>
+<li>Error bars are a visualization tool that scientific audiences are familiar with – <strong>use them</strong>!</li>
+<li>However, there are many ways to use them.
+
+<ul>
+<li>Think carefully about <strong>what you want them to convey</strong>; and</li>
+<li><strong>Be clear about how you are using them.</strong></li>
+</ul></li>
+<li>For even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model</li>
+<li>Sometimes, fitting a model is the best way to accurately quantify the uncertainty you want to convey.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Thanks!!!</h2></hgroup><article  id="thanks"></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "error_bars_files/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
