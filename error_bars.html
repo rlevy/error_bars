@@ -263,7 +263,7 @@ slide:not(.current) .plotly.html-widget{
 
 <p><img src="error_bars_files/figure-html/unnamed-chunk-6-1.png" width="50%" height="50%" /><img src="error_bars_files/figure-html/unnamed-chunk-6-2.png" width="50%" height="50%" /></p>
 
-<p>(Note that ±1.96 times isn’t exact due to finite sample size, but it’s reasonably close except when there are very fe observations)</p>
+<p>(Note that ±1.96 times isn’t exact due to finite sample size, but it’s reasonably close except when there are very few observations)</p>
 
 </article></slide><slide class=""><hgroup><h2>Strength of evidence for differences in condition means?</h2></hgroup><article  id="strength-of-evidence-for-differences-in-condition-means" class="build smaller">
 
@@ -473,7 +473,7 @@ slide:not(.current) .plotly.html-widget{
 ## optimizer (nloptwrap) convergence code: 0 (OK)
 ## boundary (singular) fit: see help(&#39;isSingular&#39;)</pre>
 
-</article></slide><slide class=""><hgroup><h2>Takeaways</h2></hgroup><article  id="takeaways">
+</article></slide><slide class=""><hgroup><h2>Takeaways</h2></hgroup><article  id="takeaways" class="smaller">
 
 <ul>
 <li>Error bars are a visualization tool that scientific audiences are familiar with – <strong>use them</strong>!</li>
@@ -483,7 +483,12 @@ slide:not(.current) .plotly.html-widget{
 <li>Think carefully about <strong>what you want them to convey</strong>; and</li>
 <li><strong>Be clear about how you are using them.</strong></li>
 </ul></li>
-<li>For even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model</li>
+<li>I tend to think that error bars are usually best suited for conveying <strong>uncertainty about summary statistics, very often the mean or expected value</strong>
+
+<ul>
+<li>There are other options, such as density plots, for conveying variability in the data distribution</li>
+</ul></li>
+<li>Regardless: for even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model</li>
 <li>Sometimes, fitting a model is the best way to accurately quantify the uncertainty you want to convey.</li>
 </ul>
 

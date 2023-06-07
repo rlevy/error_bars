@@ -244,7 +244,7 @@ ggplot(dat_to_plot,aes(x=Type,y=RT)) +
   ggtitle(TeX("1.96 $\\times$ Standard error"))
 ```
 
-(Note that ±1.96 times isn't exact due to finite sample size, but it's reasonably close except when there are very fe observations)
+(Note that ±1.96 times isn't exact due to finite sample size, but it's reasonably close except when there are very few observations)
 
 ## Strength of evidence for differences in condition means? {.build .smaller}
 
@@ -478,13 +478,15 @@ m <- lmer(rt ~ TypeSum + (TypeSum|subject) + (TypeSum|item.factor),dat,REML=F)
 summary(m)
 ```
 
-## Takeaways
+## Takeaways {.smaller}
 
 * Error bars are a visualization tool that scientific audiences are familiar with -- **use them**!
 * However, there are many ways to use them.
   - Think carefully about **what you want them to convey**; and
   - **Be clear about how you are using them.**
-* For even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model
+* I tend to think that error bars are usually best suited for conveying **uncertainty about summary statistics, very often the mean or expected value**
+  - There are other options, such as density plots, for conveying variability in the data distribution
+* Regardless: for even the simplest data, your choices about error bars imply an implicit assumed generative model and a focus on particular quantities in that model
 * Sometimes, fitting a model is the best way to accurately quantify the uncertainty you want to convey.
 
 ## Thanks!!!
